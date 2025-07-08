@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:14
+    restart: always
+    container_name: igreja_postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: igreja_finance
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
