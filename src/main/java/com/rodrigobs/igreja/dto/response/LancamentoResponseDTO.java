@@ -1,4 +1,4 @@
-package com.rodrigobs.igreja.dto.request;
+package com.rodrigobs.igreja.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
