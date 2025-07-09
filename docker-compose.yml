@@ -1,16 +1,33 @@
 services:
-  db:
-    image: postgres:14
-    restart: always
-    container_name: igreja_postgres
-    ports:
-      - "5433:5432"
+  postgres:
+    image: postgres:14.0
+    container_name: igreja_finance_db
     environment:
+      POSTGRES_DB: igreja_finance
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345678
-      POSTGRES_DB: igreja_finance
+    ports:
+      - "5433:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
+      - ./postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      
+      
+      
+  flyway:
+    image: flyway/flyway:latest
+    container_name: flyway-migration
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: ["flyway", "migrate"]
+    environment:
+      - FLYWAY_URL=jdbc:postgresql://postgres:5432/igreja_finance
+      - FLYWAY_USER=postgres
+      - FLYWAY_PASSWORD=12345678
+    volumes:
+      - ./migrations:/flyway/sql
