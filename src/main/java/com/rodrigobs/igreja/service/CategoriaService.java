@@ -19,48 +19,57 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CategoriaService {
-    
+
 	private final CategoriaRepository categoriaRepository;
-	
+
 	@Transactional
-    public CategoriaResponseDTO criar(CategoriaRequestDTO dto) {
-        Categoria categoria = CategoriaMapper.toEntity(dto);
-        Categoria salvo = categoriaRepository.save(categoria);
-        return CategoriaMapper.toDTO(salvo);
-    }
+	public CategoriaResponseDTO criar(CategoriaRequestDTO dto) {
+		verificarDuplicidade(dto.getNome());
+		Categoria categoria = CategoriaMapper.toEntity(dto);
+		Categoria salvo = categoriaRepository.save(categoria);
+		return CategoriaMapper.toDTO(salvo);
+	}
 
-    public CategoriaResponseDTO buscarPorId(UUID id) {
-        Categoria categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
-        return CategoriaMapper.toDTO(categoria);
-    }
+	public CategoriaResponseDTO buscarPorId(UUID id) {
+		Categoria categoria = categoriaRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+		return CategoriaMapper.toDTO(categoria);
+	}
 
-    public List<CategoriaResponseDTO> listarTodas() {
-        return categoriaRepository.findAll()
-                .stream()
-                .map(CategoriaMapper::toDTO)
-                .collect(Collectors.toList());
-    }
+	public List<CategoriaResponseDTO> listarTodas() {
+		return categoriaRepository.findAll().stream().map(CategoriaMapper::toDTO).collect(Collectors.toList());
+	}
 
-    @Transactional
-    public CategoriaResponseDTO atualizar(UUID id, CategoriaRequestDTO dto) {
-        Categoria categoria = categoriaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
+	@Transactional
+	public CategoriaResponseDTO atualizar(UUID id, CategoriaRequestDTO dto) {
+		Categoria categoria = categoriaRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
-        categoria.setNome(dto.getNome());
-        categoria.setTipo(dto.getTipo());
+		if (!categoria.getNome().equalsIgnoreCase(dto.getNome())) {
+			verificarDuplicidade(dto.getNome());
+		}
 
-        Categoria atualizada = categoriaRepository.save(categoria);
-        return CategoriaMapper.toDTO(atualizada);
-    }
+		categoria.setNome(dto.getNome());
+		categoria.setTipo(dto.getTipo());
 
-    @Transactional
-    public void deletar(UUID id) {
-        if (!categoriaRepository.existsById(id)) {
-            throw new EntityNotFoundException("Categoria não encontrada");
-        }
+		Categoria atualizada = categoriaRepository.save(categoria);
+		return CategoriaMapper.toDTO(atualizada);
+	}
 
-        categoriaRepository.deleteById(id);
-    }
-    
+	@Transactional
+	public void deletar(UUID id) {
+		if (!categoriaRepository.existsById(id)) {
+			throw new EntityNotFoundException("Categoria não encontrada");
+		}
+
+		categoriaRepository.deleteById(id);
+	}
+
+	private void verificarDuplicidade(String nome) {
+		boolean existe = categoriaRepository.existsByNomeIgnoreCase(nome);
+		if (existe) {
+			throw new IllegalArgumentException("Categoria já existe: " + nome);
+		}
+	}
+
 }
