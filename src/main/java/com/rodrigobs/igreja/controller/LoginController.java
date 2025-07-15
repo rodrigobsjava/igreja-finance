@@ -1,5 +1,6 @@
 package com.rodrigobs.igreja.controller;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
+	private final PasswordEncoder passwordEncoder;
 	private final UsuarioRepository usuarioRepo;
 
 	@GetMapping("/login")
@@ -28,8 +30,9 @@ public class LoginController {
 	@PostMapping("/login")
 	public String autenticar(@ModelAttribute CredenciaisDTO cred, HttpSession session, RedirectAttributes redirect) {
 
-		Usuario usuario = usuarioRepo.findByEmail(cred.getEmail()).filter(u -> u.getSenha().equals(cred.getSenha()))
-				.orElse(null);
+		Usuario usuario = usuarioRepo.findByEmail(cred.getEmail())
+	            .filter(u -> passwordEncoder.matches(cred.getSenha(), u.getSenha())) // compara hash
+	            .orElse(null);
 
 		if (usuario == null) {
 			redirect.addFlashAttribute("erro", "E‑mail ou senha inválidos");
