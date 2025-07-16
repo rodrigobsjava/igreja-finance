@@ -24,4 +24,25 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, UUID> {
 			""")
 	BigDecimal somaPorTipoEPeriodo(@Param("tipo") TipoLancamento tipo, @Param("inicio") LocalDate inicio,
 			@Param("fim") LocalDate fim);
+
+	@Query("""
+			    SELECT COALESCE(SUM(l.valor), 0)
+			    FROM Lancamento l
+			    WHERE l.categoria.id = :categoriaId
+			      AND l.tipo = :tipo
+			      AND l.data BETWEEN :inicio AND :fim
+			""")
+	BigDecimal somaPorCategoriaETipo(@Param("categoriaId") UUID categoriaId, @Param("tipo") TipoLancamento tipo,
+			@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
+
+	@Query("""
+			    SELECT COALESCE(SUM(l.valor), 0)
+			    FROM Lancamento l
+			    WHERE l.usuario.id = :usuarioId
+			      AND l.tipo = :tipo
+			      AND l.data BETWEEN :inicio AND :fim
+			""")
+	BigDecimal somaPorUsuarioETipo(@Param("usuarioId") UUID usuarioId, @Param("tipo") TipoLancamento tipo,
+			@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
+
 }
