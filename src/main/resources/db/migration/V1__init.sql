@@ -17,6 +17,9 @@ CREATE TABLE categoria (
     tipo VARCHAR(10) CHECK (tipo IN ('ENTRADA', 'SAIDA')) NOT NULL
 );
 
+-- Criação do índice unique para evitar duplicidade ignorando case
+CREATE UNIQUE INDEX uq_categoria_nome_lower ON categoria (LOWER(nome));
+
 -- Criação da tabela lancamento
 CREATE TABLE lancamento (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -38,3 +41,4 @@ INSERT INTO categoria (id, nome, tipo) VALUES
 -- Inserção de usuário administrador
 INSERT INTO usuario (id, nome, email, senha, tipo) VALUES
 (gen_random_uuid(), 'Wyston Frank', 'wfrankms2@gmail.com', '$wfrankms2', 'ADMINISTRADOR');
+
