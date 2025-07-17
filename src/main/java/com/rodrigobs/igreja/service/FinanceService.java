@@ -24,7 +24,7 @@ public class FinanceService {
 	public ResumoFinanceiroDTO resumoPeriodo(LocalDate inicio, LocalDate fim) {
 		BigDecimal entradas = lancRepo.somaPorTipoEPeriodo(TipoLancamento.ENTRADA, inicio, fim);
 		BigDecimal saídas = lancRepo.somaPorTipoEPeriodo(TipoLancamento.SAIDA, inicio, fim);
-		return new ResumoFinanceiroDTO(entradas, saídas, entradas.subtract(saídas));
+		return gerarResumo(entradas, saídas);
 	}
 
 	public ResumoFinanceiroDTO resumoSemana() {
@@ -52,13 +52,13 @@ public class FinanceService {
 	public ResumoFinanceiroDTO resumoPorCategoria(UUID categoriaId, LocalDate inicio, LocalDate fim) {
 		BigDecimal entradas = lancRepo.somaPorCategoriaETipo(categoriaId, TipoLancamento.ENTRADA, inicio, fim);
 		BigDecimal saidas = lancRepo.somaPorCategoriaETipo(categoriaId, TipoLancamento.SAIDA, inicio, fim);
-		return new ResumoFinanceiroDTO(entradas, saidas, entradas.subtract(saidas));
+		return gerarResumo(entradas, saidas);
 	}
 
 	public ResumoFinanceiroDTO resumoPorUsuario(UUID usuarioId, LocalDate inicio, LocalDate fim) {
 		BigDecimal entradas = lancRepo.somaPorUsuarioETipo(usuarioId, TipoLancamento.ENTRADA, inicio, fim);
 		BigDecimal saidas = lancRepo.somaPorUsuarioETipo(usuarioId, TipoLancamento.SAIDA, inicio, fim);
-		return new ResumoFinanceiroDTO(entradas, saidas, entradas.subtract(saidas));
+		return gerarResumo(entradas, saidas);
 	}
 
 	public BigDecimal totalEntradas(LocalDate inicio, LocalDate fim) {
@@ -69,4 +69,7 @@ public class FinanceService {
 		return lancRepo.somaPorTipoEPeriodo(TipoLancamento.SAIDA, inicio, fim);
 	}
 
+	private ResumoFinanceiroDTO gerarResumo(BigDecimal entradas, BigDecimal saidas) {
+		return new ResumoFinanceiroDTO(entradas, saidas, entradas.subtract(saidas));
+	}
 }
