@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Usuário</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-12-mobile is-8-tablet is-6-desktop form-box">
+          <h1 class="title has-text-centered has-text-danger-dark">Cadastro de Usuário</h1>
+
+          <form th:action="@{/usuarios/salvar}" method="post" th:object="${usuario}">
+            <!-- Nome -->
+            <div class="field">
+              <label class="label">Nome</label>
+              <div class="control">
+                <input class="input" type="text" th:field="*{nome}" placeholder="Digite o nome" required>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="field">
+              <label class="label">E-mail</label>
+              <div class="control">
+                <input class="input" type="email" th:field="*{email}" placeholder="email@exemplo.com" required>
+              </div>
+            </div>
+
+            <!-- Senha -->
+            <div class="field">
+              <label class="label">Senha</label>
+              <div class="control">
+                <input class="input" type="password" th:field="*{senha}" placeholder="Digite a senha" required>
+              </div>
+            </div>
+
+            <!-- Tipo -->
+            <div class="field">
+              <label class="label">Tipo de Usuário</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select th:field="*{tipo}" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option th:value="ADMINISTRADOR">Administrador</option>
+                    <option th:value="TESOUREIRA">Tesoureira</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="field is-grouped is-grouped-centered mt-5">
+              <div class="control">
+                <button type="submit" class="button is-danger">Salvar</button>
+              </div>
+              <div class="control">
+                <a th:href="@{/dashboard}" class="button is-warning">Voltar</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

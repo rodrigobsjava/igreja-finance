@@ -14,54 +14,57 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	/* ===== 400 – Validação de formulário ===== */
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public String handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request, // ⬅️ injeta o
-																									// request
-			RedirectAttributes redirect) {
+    /* ===== 400 – Validação de formulário ===== */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleValidation(MethodArgumentNotValidException ex,
+                                   HttpServletRequest request,
+                                   RedirectAttributes redirect) {
 
-		List<String> erros = ex.getBindingResult().getFieldErrors().stream()
-				.map(fe -> String.format("%s: %s", fe.getField(), fe.getDefaultMessage())).collect(Collectors.toList());
+        List<String> erros = ex.getBindingResult().getFieldErrors().stream()
+                .map(this::formatarErro)
+                .collect(Collectors.toList());
 
-		redirect.addFlashAttribute("erros", erros);
+        redirect.addFlashAttribute("erros", erros);
 
-		// tenta voltar para a página anterior; se nulo, vai para raiz
-		String referrer = request.getHeader("Referer");
-		return "redirect:" + (referrer != null ? referrer : "/");
-	}
+        // tenta retornar para a página anterior
+        String referrer = request.getHeader("Referer");
+        return "redirect:" + (referrer != null ? referrer : "/");
+    }
 
-	/* ===== 404 – Entidade não encontrada ===== */
-	@ExceptionHandler(EntityNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String handleNotFound(EntityNotFoundException ex, Model model) {
-		model.addAttribute("mensagem", ex.getMessage());
-		return "error/404"; // templates/error/404.html
-	}
+    /* ===== 404 – Entidade não encontrada ===== */
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNotFound(EntityNotFoundException ex, Model model) {
+        model.addAttribute("mensagem", ex.getMessage());
+        return "error/404"; // Template: templates/error/404.html
+    }
 
-	/* ===== 409 – Regra de negócio (duplicidade, etc.) ===== */
-	@ExceptionHandler(IllegalArgumentException.class)
-	@ResponseStatus(HttpStatus.CONFLICT)
-	public String handleIllegalArg(IllegalArgumentException ex, RedirectAttributes redirect) {
-		redirect.addFlashAttribute("erro", ex.getMessage());
-		return "redirect:/"; // volta à home ou ajuste conforme necessidade
-	}
+    /* ===== 409 – Conflito de regra de negócio ===== */
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public String handleIllegalArg(IllegalArgumentException ex, RedirectAttributes redirect) {
+        redirect.addFlashAttribute("erro", ex.getMessage());
+        return "redirect:/"; // volta para home, ajuste se necessário
+    }
 
-	/* ===== 500 – Qualquer erro não tratado ===== */
-	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public String handleGeneric(Exception ex, Model model) {
-		model.addAttribute("mensagem", "Ocorreu um erro inesperado.");
-		return "error/500";
-	}
+    /* ===== 500 – Erros internos não tratados ===== */
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleGeneric(Exception ex, Model model) {
+        log.error("Erro inesperado não tratado", ex); // logging para debug/tracing
+        model.addAttribute("mensagem", "Ocorreu um erro inesperado.");
+        return "error/500"; // Template: templates/error/500.html
+    }
 
-	/* ---------- helpers ---------- */
-	private String formatarErro(FieldError fe) {
-		return String.format("%s: %s", fe.getField(), fe.getDefaultMessage());
-	}
-
+    /* ---------- Helper ---------- */
+    private String formatarErro(FieldError fe) {
+        return String.format("%s: %s", fe.getField(), fe.getDefaultMessage());
+    }
 }
