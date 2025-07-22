@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Área 24</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="../static/css/style.css" />
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-10-mobile is-8-tablet is-5-desktop form-box">
+          <h1 class="title has-text-centered">Área 24</h1>
+          <h2 class="subtitle has-text-centered">Acesso ao sistema</h2>
+
+          <form th:action="@{/login}" method="post">
+            <!-- Email -->
+            <div class="field">
+              <label class="label">E-mail</label>
+              <div class="control">
+                <input class="input" type="email" name="email" placeholder="email@exemplo.com" required>
+              </div>
+            </div>
+
+            <!-- Senha -->
+            <div class="field">
+              <label class="label">Senha</label>
+              <div class="control">
+                <input class="input" type="password" name="senha" placeholder="Digite sua senha" required>
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="field is-grouped is-grouped-centered mt-4">
+              <div class="control">
+                <button type="submit" class="button is-danger">Entrar</button>
+              </div>
+              <div class="control">
+                <a href="/usuarios/novo" class="button is-warning">Criar Conta</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
