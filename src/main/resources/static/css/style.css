@@ -14,7 +14,7 @@ body {
 }
 
 .title {
-  color: #d5181f !important; /* vermelho padrão */
+  color: #d5181f !important; /* vermelho padrao */
 }
 
 .button.is-danger {
@@ -30,3 +30,16 @@ body {
 .button:hover {
   filter: brightness(0.95);
 }
+
+
+/* FOOTER */
+
+
+.footer {
+  padding: 1.5rem 1rem;
+  background-color: #d5181f;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+
