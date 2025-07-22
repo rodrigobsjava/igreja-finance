@@ -45,6 +45,7 @@ public class UsuarioController {
                          BindingResult result,
                          RedirectAttributes redirect) {
         if (result.hasErrors()) {
+        	redirect.addFlashAttribute("erros", result.getAllErrors());
             return "usuarios/form-usuario";
         }
         usuarioService.criar(dto);
