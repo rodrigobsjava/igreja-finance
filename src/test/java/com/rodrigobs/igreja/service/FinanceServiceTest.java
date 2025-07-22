@@ -50,7 +50,7 @@ class FinanceServiceTest {
             ResumoFinanceiroDTO resumo = financeService.resumoPeriodo(inicio, fim);
 
             assertThat(resumo.getEntradas()).isEqualByComparingTo("1000.00");
-            assertThat(resumo.getSaídas()).isEqualByComparingTo("400.00");
+            assertThat(resumo.getSaidas()).isEqualByComparingTo("400.00");
             assertThat(resumo.getSaldo()).isEqualByComparingTo("600.00");
         }
 
@@ -62,7 +62,7 @@ class FinanceServiceTest {
             ResumoFinanceiroDTO resumo = financeService.resumoPeriodo(inicio, fim);
 
             assertThat(resumo.getEntradas()).isZero();
-            assertThat(resumo.getSaídas()).isZero();
+            assertThat(resumo.getSaidas()).isZero();
             assertThat(resumo.getSaldo()).isZero();
         }
     }
@@ -77,7 +77,7 @@ class FinanceServiceTest {
             ResumoFinanceiroDTO resumo = financeService.resumoSemana();
 
             assertThat(resumo.getEntradas()).isEqualByComparingTo(BigDecimal.TEN);
-            assertThat(resumo.getSaídas()).isEqualByComparingTo(BigDecimal.TEN);
+            assertThat(resumo.getSaidas()).isEqualByComparingTo(BigDecimal.TEN);
             assertThat(resumo.getSaldo()).isZero(); // 10 - 10 = 0
         }
 
@@ -88,7 +88,7 @@ class FinanceServiceTest {
             ResumoFinanceiroDTO resumo = financeService.resumoMes();
 
             assertThat(resumo.getEntradas()).isEqualByComparingTo(BigDecimal.ONE);
-            assertThat(resumo.getSaídas()).isEqualByComparingTo(BigDecimal.ONE);
+            assertThat(resumo.getSaidas()).isEqualByComparingTo(BigDecimal.ONE);
             assertThat(resumo.getSaldo()).isZero();
         }
 
@@ -126,7 +126,7 @@ class FinanceServiceTest {
             ResumoFinanceiroDTO resumo = financeService.resumoPorCategoria(categoriaId, inicio, fim);
 
             assertThat(resumo.getEntradas()).isEqualByComparingTo("700");
-            assertThat(resumo.getSaídas()).isEqualByComparingTo("500");
+            assertThat(resumo.getSaidas()).isEqualByComparingTo("500");
             assertThat(resumo.getSaldo()).isEqualByComparingTo("200");
         }
 
@@ -142,7 +142,7 @@ class FinanceServiceTest {
             ResumoFinanceiroDTO resumo = financeService.resumoPorUsuario(usuarioId, inicio, fim);
 
             assertThat(resumo.getEntradas()).isEqualByComparingTo("300");
-            assertThat(resumo.getSaídas()).isEqualByComparingTo("100");
+            assertThat(resumo.getSaidas()).isEqualByComparingTo("100");
             assertThat(resumo.getSaldo()).isEqualByComparingTo("200");
         }
     }

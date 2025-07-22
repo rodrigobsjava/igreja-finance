@@ -27,7 +27,7 @@ public class UsuarioService {
 
 	@Transactional
 	public UsuarioResponseDTO criar(UsuarioRequestDTO dto) {
-		// Verifica se o e-mail já existe
+		// Verifica se o e-mail ja existe
 		if (usuarioRepository.findByEmail(dto.getEmail()).isPresent()) {
 			throw new EmailJaCadastradoException("E-mail já cadastrado: " + dto.getEmail());
 		}
@@ -53,7 +53,7 @@ public class UsuarioService {
 		Usuario usuario = usuarioRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
-		// Evita alterar para um e-mail já usado por outro usuário
+		// Evita alterar para um e-mail ja usado por outro usuário
 		usuarioRepository.findByEmail(dto.getEmail()).ifPresent(existing -> {
 			if (!existing.getId().equals(id)) {
 				throw new EmailJaCadastradoException("E-mail já está em uso por outro usuário");

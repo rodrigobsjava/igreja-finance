@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Área 24</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <section class="section has-background-light">
+        <div class="container">
+            <h1 class="title has-text-centered has-text-danger-dark">Área 24 - Dashboard</h1>
+
+            <!-- Cartões de Resumo Financeiro -->
+            <div class="columns is-multiline is-variable is-6 mt-5">
+
+                <!-- Semana -->
+                <div class="column is-12-mobile is-6-tablet is-3-desktop">
+                    <div class="box resumo-card">
+                        <h2 class="subtitle">Semana</h2>
+                        <p><strong class="has-text-grey-darker">Entradas:</strong> R$ <span
+                                th:text="${resumo.semana.entradas}" class="has-text-link">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saídas:</strong> R$ <span
+                                th:text="${resumo.semana.saidas}" class="has-text-danger">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saldo:</strong> R$ <span
+                                th:text="${resumo.semana.saldo}">0.00</span></p>
+                    </div>
+                </div>
+
+                <!-- Mês -->
+                <div class="column is-12-mobile is-6-tablet is-3-desktop">
+                    <div class="box resumo-card">
+                        <h2 class="subtitle">Mês</h2>
+                        <p><strong class="has-text-grey-darker">Entradas:</strong> R$ <span
+                                th:text="${resumo.mes.entradas}" class="has-text-link">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saídas:</strong> R$ <span th:text="${resumo.mes.saidas}"
+                                class="has-text-danger">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saldo:</strong> R$ <span
+                                th:text="${resumo.mes.saldo}">0.00</span></p>
+                    </div>
+                </div>
+
+                <!-- Trimestre -->
+                <div class="column is-12-mobile is-6-tablet is-3-desktop">
+                    <div class="box resumo-card">
+                        <h2 class="subtitle">Trimestre</h2>
+                        <p><strong class="has-text-grey-darker">Entradas:</strong> R$ <span
+                                th:text="${resumo.trimestre.entradas}" class="has-text-link">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saídas:</strong> R$ <span
+                                th:text="${resumo.trimestre.saidas}" class="has-text-danger">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saldo:</strong> R$ <span
+                                th:text="${resumo.trimestre.saldo}">0.00</span></p>
+                    </div>
+                </div>
+
+                <!-- Ano -->
+                <div class="column is-12-mobile is-6-tablet is-3-desktop">
+                    <div class="box resumo-card">
+                        <h2 class="subtitle">Ano</h2>
+                        <p><strong class="has-text-grey-darker">Entradas:</strong> R$ <span
+                                th:text="${resumo.ano.entradas}" class="has-text-link">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saídas:</strong> R$ <span th:text="${resumo.ano.saidas}"
+                                class="has-text-danger">0.00</span></p>
+                        <p><strong class="has-text-grey-darker">Saldo:</strong> R$ <span
+                                th:text="${resumo.ano.saldo}">0.00</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="has-text-centered mt-6">
+                <a href="/logout" class="button is-danger">Sair</a>
+            </div>
+        </div>
+    </section>
+
+    <footer th:replace="fragments/footer :: rodape"></footer>
+
+</body>
+
+</html>

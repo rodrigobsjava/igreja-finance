@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ResumoFinanceiroDTO {
-    private BigDecimal entradas;
-    private BigDecimal saidas;
-    private BigDecimal saldo;
+public class PeriodoResumoDTO {
+	private BigDecimal entradas;
+	private BigDecimal saidas;
+	private BigDecimal saldo;
 }

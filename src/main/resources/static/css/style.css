@@ -43,3 +43,23 @@ body {
 }
 
 
+.resumo-card {
+  background-color: #ffffff;
+  border-left: 6px solid #d5181f;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.resumo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.title {
+  color: #f7eb00 !important; /* amarelo padrao */
+}
+
+.subtitle {
+  color: #d5181f !important; /* vermelho padrao */
+  margin-bottom: 1rem;
+}
